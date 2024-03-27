@@ -3,6 +3,8 @@ import { Patient } from "../../types";
 import patientService from "../../services/patients";
 import { useEffect, useState } from "react";
 import FemaleIcon from "@mui/icons-material/Female";
+import MaleIcon from "@mui/icons-material/Male";
+import AltRouteIcon from "@mui/icons-material/AltRoute";
 
 // interface Props {
 //   patients: Patient[];
@@ -32,7 +34,13 @@ const SinglePatientPage = () => {
         <ul>
           <li>
             <h2 style={{ display: "inline-block" }}>{patient.name}</h2>
-            <FemaleIcon />
+            {patient.gender === "male" ? (
+              <MaleIcon />
+            ) : patient.gender === "female" ? (
+              <FemaleIcon />
+            ) : (
+              <AltRouteIcon />
+            )}
           </li>
           <li>ssn: {patient.ssn}</li>
           <li>occupation: {patient.occupation}</li>
