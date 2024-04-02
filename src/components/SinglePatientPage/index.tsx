@@ -44,6 +44,19 @@ const SinglePatientPage = () => {
           </li>
           <li>ssn: {patient.ssn}</li>
           <li>occupation: {patient.occupation}</li>
+          <br />
+          <h3>entries</h3>
+          {patient.entries.map((entry) => (
+            <>
+              <p style={{ display: "flex", gap: "10px" }}>
+                {entry.date}
+                <em>{entry.description}</em>
+              </p>
+              {entry?.diagnosisCodes.map((code) => (
+                <li>{code}</li>
+              ))}
+            </>
+          ))}
         </ul>
       )}
     </div>
