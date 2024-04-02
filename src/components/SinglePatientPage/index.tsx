@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Patient } from "../../types";
+import { Diagnosis, Patient } from "../../types";
 import patientService from "../../services/patients";
 import { useEffect, useState } from "react";
 import FemaleIcon from "@mui/icons-material/Female";
@@ -11,15 +11,23 @@ import AltRouteIcon from "@mui/icons-material/AltRoute";
 // }
 const SinglePatientPage = () => {
   const { id } = useParams<{ id: string }>();
-  console.log("singlepat-id-", id);
   const [patient, setPatient] = useState<Patient>();
+  const [diagnoses, setDiagnoses] = useState();
 
   useEffect(() => {
     async function fetchPatient() {
       try {
         const patient = await patientService.getPatient(id);
+        let async_diagnoses = await patientService.getDiagnoses();
         console.log("singlepatientpage--", patient);
+        let changed_diagnoses = async_diagnoses.reduce((acc, curr) => {
+          acc[curr.code] = curr.name;
+          return acc;
+        }, {});
+        // console.log("changed_diagnoses-", changed_diagnoses);
+
         setPatient(patient);
+        setDiagnoses(changed_diagnoses);
       } catch (e) {
         console.log("error singlepat-", e);
       }
@@ -27,6 +35,7 @@ const SinglePatientPage = () => {
 
     fetchPatient();
   }, [id]);
+  console.log("diag-", diagnoses);
 
   return (
     <div>
@@ -53,7 +62,9 @@ const SinglePatientPage = () => {
                 <em>{entry.description}</em>
               </p>
               {entry?.diagnosisCodes.map((code) => (
-                <li>{code}</li>
+                <li style={{ display: "flex", gap: "20px" }}>
+                  {code} {diagnoses[code]}
+                </li>
               ))}
             </>
           ))}
