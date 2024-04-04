@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import AltRouteIcon from "@mui/icons-material/AltRoute";
+import EntryDetails from "../EntryDetails";
 
 // interface Props {
 //   patients: Patient[];
@@ -41,7 +42,7 @@ const SinglePatientPage = () => {
     <div>
       {patient && (
         <ul>
-          <li>
+          <li key={patient.name}>
             <h2 style={{ display: "inline-block" }}>{patient.name}</h2>
             {patient.gender === "male" ? (
               <MaleIcon />
@@ -51,23 +52,15 @@ const SinglePatientPage = () => {
               <AltRouteIcon />
             )}
           </li>
-          <li>ssn: {patient.ssn}</li>
-          <li>occupation: {patient.occupation}</li>
+          <li key={patient.ssn}>ssn: {patient.ssn}</li>
+          <li key={patient.occupation}>occupation: {patient.occupation}</li>
           <br />
           <h3>entries</h3>
-          {patient.entries.map((entry) => (
-            <>
-              <p style={{ display: "flex", gap: "10px" }}>
-                {entry.date}
-                <em>{entry.description}</em>
-              </p>
-              {entry?.diagnosisCodes.map((code) => (
-                <li style={{ display: "flex", gap: "20px" }}>
-                  {code} {diagnoses[code]}
-                </li>
-              ))}
-            </>
-          ))}
+          <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+            {patient.entries.map((entry) => (
+              <EntryDetails entry={entry} />
+            ))}
+          </div>
         </ul>
       )}
     </div>
